@@ -1,0 +1,104 @@
+@view-transition {
+  navigation: auto;
+}
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.nav-link {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #3b82f6;
+}
+
+.nav-link.active {
+  color: #3b82f6;
+}
+
+.btn-primary {
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+}
+
+.charging-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.section-padding {
+  padding: 80px 20px;
+}
+
+.hidden-section {
+  display: none;
+}
+
+.active-section {
+  display: block;
+}
+
+.circuit-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid #e2e8f0;
+}
+
+.circuit-card:hover {
+  border-color: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 50px 20px;
+  }
+}
+
+.news-card {
+  transition: all 0.3s ease;
+  border-left: 4px solid #3b82f6;
+}
+
+.news-card:hover {
+  background-color: #f8fafc;
+}
+
+.partner-logo {
+  filter: grayscale(100%);
+  transition: all 0.3s ease;
+}
+
+.partner-logo:hover {
+  filter: grayscale(0%);
+  transform: scale(1.1);
+}

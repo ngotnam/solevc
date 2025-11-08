@@ -1,0 +1,1776 @@
+<!doctype html>
+<html lang="vi">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOL EVC - Hệ Thống Trạm Sạc Xe Điện Thông Minh</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #3b82f6;
+        }
+
+        .nav-link.active {
+            color: #3b82f6;
+        }
+
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .charging-animation {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .section-padding {
+            padding: 80px 20px;
+        }
+
+        .hidden-section {
+            display: none;
+        }
+
+        .active-section {
+            display: block;
+        }
+
+        .circuit-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e2e8f0;
+        }
+
+        .circuit-card:hover {
+            border-color: #3b82f6;
+        }
+
+        @media (max-width: 768px) {
+            .section-padding {
+                padding: 50px 20px;
+            }
+        }
+
+        .news-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .news-card:hover {
+            background-color: #f8fafc;
+        }
+
+        .partner-logo {
+            filter: grayscale(100%);
+            transition: all 0.3s ease;
+        }
+
+        .partner-logo:hover {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .faq-question {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background-color: #f8fafc;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer.active {
+            max-height: 200px;
+        }
+
+        .step-card {
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .report-form {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .priority-high {
+            border-left: 4px solid #ef4444;
+        }
+
+        .priority-medium {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .priority-low {
+            border-left: 4px solid #10b981;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body><!-- Navigation -->
+  <nav id="navbar" class="fixed w-full top-0 z-50 bg-white shadow-lg">
+   <div class="max-w-7xl mx-auto px-6 py-4">
+    <div class="flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+  <img src="assets/images/LOGO SOLEVC.png" alt="SOL EVC" class="h-10 w-auto">
+  
+</div>
+     <div class="hidden md:flex space-x-8"><a href="#" class="nav-link font-medium active" data-section="home">Trang Chủ</a> <a href="#" class="nav-link font-medium" data-section="services">Dịch Vụ</a> <a href="#" class="nav-link font-medium" data-section="map">Bản Đồ</a> <a href="#" class="nav-link font-medium" data-section="partners">Đối Tác</a> <a href="#" class="nav-link font-medium" data-section="contact">Liên Hệ</a> <a href="#" class="nav-link font-medium" data-section="news">Tin Tức</a>
+      <div class="relative dropdown"><a href="#" class="nav-link font-medium">Hỗ Trợ ▼</a>
+       <div class="dropdown-menu absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50"><a href="#" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 nav-link" data-section="guide">Hướng dẫn sử dụng</a> <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 nav-link" data-section="faq">Câu hỏi thường gặp</a> <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 nav-link" data-section="support">Liên hệ hỗ trợ</a> <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 nav-link" data-section="report">Báo cáo sự cố</a> <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 nav-link" data-section="maintenance">Bảo trì hệ thống</a>
+       </div>
+      </div>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg></button>
+    </div>
+   </div><!-- Mobile Menu -->
+   <div id="mobile-menu" class="hidden md:hidden bg-white px-6 py-4 shadow-lg"><a href="#" class="block py-2 nav-link active" data-section="home">Trang Chủ</a> <a href="#" class="block py-2 nav-link" data-section="services">Dịch Vụ</a> <a href="#" class="block py-2 nav-link" data-section="map">Bản Đồ</a> <a href="#" class="block py-2 nav-link" data-section="partners">Đối Tác</a> <a href="#" class="block py-2 nav-link" data-section="contact">Liên Hệ</a> <a href="#" class="block py-2 nav-link" data-section="news">Tin Tức</a>
+    <div class="border-t pt-2 mt-2">
+     <div class="text-sm font-semibold text-gray-500 mb-2">
+      Hỗ Trợ
+     </div><a href="#" class="block py-2 pl-4 nav-link" data-section="guide">Hướng dẫn sử dụng</a> <a href="#" class="block py-2 pl-4 nav-link" data-section="faq">Câu hỏi thường gặp</a> <a href="#" class="block py-2 pl-4 nav-link" data-section="support">Liên hệ hỗ trợ</a> <a href="#" class="block py-2 pl-4 nav-link" data-section="report">Báo cáo sự cố</a> <a href="#" class="block py-2 pl-4 nav-link" data-section="maintenance">Bảo trì hệ thống</a>
+    </div>
+   </div>
+  </nav><!-- Home Section -->
+  <section id="home-section" class="active-section"><!-- Hero Section -->
+   <div class="gradient-bg min-h-screen flex items-center justify-center text-white">
+    <div class="max-w-7xl mx-auto px-6 py-32 text-center">
+     <div class="mb-8">
+      <svg class="w-24 h-24 mx-auto mb-6 charging-animation" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+     </div>
+     <h1 id="hero-title" class="text-5xl md:text-6xl font-bold mb-6">Hệ Thống Trạm Sạc Xe Điện Thông Minh</h1>
+     <p id="hero-subtitle" class="text-xl md:text-2xl mb-10 opacity-90">Giải pháp sạc toàn diện cho ô tô và xe máy điện tất cả các hãng</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center"><button class="btn-primary bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold"> Tìm Trạm Sạc </button> <button class="btn-primary border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold"> Xem Dịch Vụ </button>
+     </div>
+    </div>
+   </div><!-- Services Overview -->
+   <div class="section-padding bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+     <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">Dịch Vụ Trạm Sạc SOL EVC</h2>
+     <div class="grid md:grid-cols-2 gap-12"><!-- Car Charging -->
+      <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+       <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+        <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+       </div>
+       <h3 id="car-charging-title" class="text-2xl font-bold mb-4 text-gray-800">Trạm Sạc Ô Tô Điện</h3>
+       <p class="text-gray-600 mb-6">Hỗ trợ tất cả các hãng xe ô tô điện với công nghệ sạc AC và DC hiện đại</p>
+       <ul class="space-y-2 text-gray-600 mb-6">
+        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Trạm sạc AC 7kW - 22kW</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Trạm sạc DC 50kW - 150kW</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Tương thích tất cả các hãng</li>
+       </ul><button class="btn-primary bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-blue-700" onclick="showCarChargingServices()"> Xem Chi Tiết Trạm Sạc Ô Tô </button>
+      </div><!-- Motorbike Charging -->
+      <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+       <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+       </div>
+       <h3 id="motorbike-charging-title" class="text-2xl font-bold mb-4 text-gray-800">Trạm Sạc Xe Máy Điện</h3>
+       <p class="text-gray-600 mb-6">3 mạch sạc chuyên dụng do SOL EVC phát triển cho xe máy điện</p>
+       <ul class="space-y-2 text-gray-600 mb-6">
+        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>SOL EVC Basic</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>SOL EVC Plus</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>SOL EVC Pro</li>
+       </ul><button class="btn-primary bg-green-600 text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-green-700" onclick="showMotorbikeChargingServices()"> Xem Chi Tiết Trạm Sạc Xe Máy </button>
+      </div>
+     </div>
+    </div>
+   </div><!-- Charging Policy -->
+   <div class="section-padding bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+     <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">Chính Sách Trạm Sạc</h2>
+     <div class="grid md:grid-cols-4 gap-8">
+      <div class="text-center">
+       <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Giá Cả Minh Bạch</h3>
+       <p class="text-gray-600">Bảng giá rõ ràng, không phí ẩn</p>
+      </div>
+      <div class="text-center">
+       <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-2">An Toàn Tuyệt Đối</h3>
+       <p class="text-gray-600">Tiêu chuẩn quốc tế, bảo hiểm toàn diện</p>
+      </div>
+      <div class="text-center">
+       <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Hoạt Động 24/7</h3>
+       <p class="text-gray-600">Phục vụ không ngừng nghỉ</p>
+      </div>
+      <div class="text-center">
+       <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Chất Lượng Đảm Bảo</h3>
+       <p class="text-gray-600">Cam kết chất lượng dịch vụ tốt nhất</p>
+      </div>
+     </div>
+    </div>
+   </div><!-- Map Preview -->
+   <div class="section-padding bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+     <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">Bản Đồ Trạm Sạc</h2>
+     <div class="bg-white rounded-2xl p-8 shadow-lg">
+      <div class="h-96 bg-gray-100 rounded-xl flex items-center justify-center">
+       <svg class="w-full h-full max-w-md" viewbox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#f0f4f8" /> <circle cx="80" cy="60" r="6" fill="#3b82f6" /> <circle cx="150" cy="90" r="6" fill="#3b82f6" /> <circle cx="220" cy="70" r="6" fill="#3b82f6" /> <circle cx="300" cy="100" r="6" fill="#3b82f6" /> <circle cx="120" cy="150" r="6" fill="#3b82f6" /> <circle cx="200" cy="180" r="6" fill="#3b82f6" /> <circle cx="280" cy="160" r="6" fill="#3b82f6" /> <circle cx="100" cy="220" r="6" fill="#3b82f6" /> <circle cx="250" cy="240" r="6" fill="#3b82f6" /> <text x="200" y="150" text-anchor="middle" fill="#3b82f6" font-size="18" font-weight="bold">
+         Mạng lưới trạm sạc SOL EVC
+        </text> <text x="200" y="170" text-anchor="middle" fill="#6b7280" font-size="14">
+         Phủ sóng toàn quốc
+        </text>
+       </svg>
+      </div>
+      <div class="text-center mt-6"><button class="btn-primary bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold" data-section="map"> Xem Bản Đồ Chi Tiết </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Services Section -->
+  <section id="services-section" class="hidden-section section-padding">
+   <div class="max-w-7xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Dịch Vụ Sạc Xe Điện</h1><!-- Car Charging Services -->
+    <div id="car-services" class="mb-20">
+     <h2 class="text-3xl font-bold mb-12 text-gray-800">Trạm Sạc Xe Ô Tô</h2>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+       <h3 class="text-2xl font-bold mb-4 text-blue-600">Trạm Sạc AC</h3>
+       <p class="text-gray-600 mb-6">Sạc chậm an toàn cho sử dụng hàng ngày</p>
+       <ul class="space-y-3 text-gray-600">
+        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Công suất: 7kW - 22kW</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Thời gian sạc: 4-8 giờ</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Phù hợp: Sạc tại nhà, văn phòng</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Chuẩn kết nối: Type 2</li>
+       </ul>
+      </div>
+      <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+       <h3 class="text-2xl font-bold mb-4 text-green-600">Trạm Sạc DC</h3>
+       <p class="text-gray-600 mb-6">Sạc nhanh cho di chuyển đường dài</p>
+       <ul class="space-y-3 text-gray-600">
+        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Công suất: 50kW - 150kW</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Thời gian sạc: 30-60 phút</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Phù hợp: Trạm dừng chân, cao tốc</li>
+        <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Chuẩn kết nối: CCS2, CHAdeMO</li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- Motorbike Charging Services -->
+    <div id="motorbike-services" class="mb-20">
+     <h2 class="text-3xl font-bold mb-12 text-gray-800">Trạm Sạc Xe Máy Điện</h2>
+     <div class="grid md:grid-cols-3 gap-8 mb-12">
+      <div class="circuit-card card-hover rounded-2xl p-6 shadow-lg">
+       <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-blue-600">B</span>
+        </div>
+        <h3 id="basic-circuit" class="text-xl font-bold text-gray-800">SOL EVC Basic</h3>
+       </div>
+       <ul class="space-y-2 text-gray-600 text-sm">
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></span>Công suất: 1kW</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></span>Thời gian sạc: 3-4 giờ</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></span>Phù hợp: Sạc cơ bản</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></span>Giá thành: Tiết kiệm</li>
+       </ul>
+      </div>
+      <div class="circuit-card card-hover rounded-2xl p-6 shadow-lg">
+       <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-green-600">P</span>
+        </div>
+        <h3 id="plus-circuit" class="text-xl font-bold text-gray-800">SOL EVC Plus</h3>
+       </div>
+       <ul class="space-y-2 text-gray-600 text-sm">
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-green-600 rounded-full mr-2"></span>Công suất: 2kW</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-green-600 rounded-full mr-2"></span>Thời gian sạc: 2-3 giờ</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-green-600 rounded-full mr-2"></span>Phù hợp: Sạc nhanh hơn</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-green-600 rounded-full mr-2"></span>Tính năng: Thông minh</li>
+       </ul>
+      </div>
+      <div class="circuit-card card-hover rounded-2xl p-6 shadow-lg">
+       <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-purple-600">P</span>
+        </div>
+        <h3 id="pro-circuit" class="text-xl font-bold text-gray-800">SOL EVC Pro</h3>
+       </div>
+       <ul class="space-y-2 text-gray-600 text-sm">
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-purple-600 rounded-full mr-2"></span>Công suất: 3kW</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-purple-600 rounded-full mr-2"></span>Thời gian sạc: 1-2 giờ</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-purple-600 rounded-full mr-2"></span>Phù hợp: Sạc siêu nhanh</li>
+        <li class="flex items-center"><span class="w-1.5 h-1.5 bg-purple-600 rounded-full mr-2"></span>Tính năng: Cao cấp</li>
+       </ul>
+      </div>
+     </div><!-- Charger for Motorbikes -->
+     <div class="bg-white rounded-2xl p-8 shadow-lg">
+      <h3 class="text-2xl font-bold mb-6 text-gray-800">Cục Sạc Xe Máy Điện</h3>
+      <div class="grid md:grid-cols-2 gap-8">
+       <div>
+        <h4 class="text-xl font-bold mb-4 text-blue-600">Dành cho VinFast</h4>
+        <ul class="space-y-2 text-gray-600">
+         <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>VinFast Klara</li>
+         <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>VinFast Impes</li>
+         <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>VinFast Ludo</li>
+         <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>VinFast Theon</li>
+        </ul>
+       </div>
+       <div>
+        <h4 class="text-xl font-bold mb-4 text-green-600">Các Hãng Khác</h4>
+        <ul class="space-y-2 text-gray-600">
+         <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Honda, Yamaha</li>
+         <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Pega, DK Bike</li>
+         <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Yadea, Nijia</li>
+         <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Và nhiều hãng khác</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div><!-- Electric Motorbike Charging Section -->
+    <div id="electric-motorbike-charging" class="hidden mb-20">
+     <h2 class="text-3xl font-bold mb-12 text-gray-800">Sạc Cho Xe Máy Điện</h2>
+     <div class="grid md:grid-cols-2 gap-8 mb-12"><!-- Charging Process -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg">
+       <h3 class="text-2xl font-bold mb-6 text-purple-600">Quy Trình Sạc</h3>
+       <div class="space-y-4">
+        <div class="flex items-start space-x-4">
+         <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-purple-600 font-bold text-sm">1</span>
+         </div>
+         <div>
+          <h4 class="font-semibold text-gray-800">Chuẩn Bị</h4>
+          <p class="text-gray-600 text-sm">Tắt máy xe và mở nắp cổng sạc</p>
+         </div>
+        </div>
+        <div class="flex items-start space-x-4">
+         <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-purple-600 font-bold text-sm">2</span>
+         </div>
+         <div>
+          <h4 class="font-semibold text-gray-800">Kết Nối</h4>
+          <p class="text-gray-600 text-sm">Cắm cục sạc vào ổ điện và xe</p>
+         </div>
+        </div>
+        <div class="flex items-start space-x-4">
+         <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-purple-600 font-bold text-sm">3</span>
+         </div>
+         <div>
+          <h4 class="font-semibold text-gray-800">Theo Dõi</h4>
+          <p class="text-gray-600 text-sm">Quan sát đèn báo trên cục sạc</p>
+         </div>
+        </div>
+        <div class="flex items-start space-x-4">
+         <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-purple-600 font-bold text-sm">4</span>
+         </div>
+         <div>
+          <h4 class="font-semibold text-gray-800">Hoàn Thành</h4>
+          <p class="text-gray-600 text-sm">Đèn xanh báo sạc đầy, rút dây</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Safety Tips -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg">
+       <h3 class="text-2xl font-bold mb-6 text-red-600">Lưu Ý An Toàn</h3>
+       <div class="space-y-4">
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+         <h4 class="font-semibold text-red-700 mb-2">⚠️ Cần Tránh</h4>
+         <ul class="text-red-600 text-sm space-y-1">
+          <li>• Không sạc khi trời mưa to</li>
+          <li>• Không để nước vào cổng sạc</li>
+          <li>• Không sử dụng dây sạc hỏng</li>
+          <li>• Không để trẻ em tiếp xúc</li>
+         </ul>
+        </div>
+        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+         <h4 class="font-semibold text-green-700 mb-2">✅ Nên Làm</h4>
+         <ul class="text-green-600 text-sm space-y-1">
+          <li>• Kiểm tra dây sạc trước khi dùng</li>
+          <li>• Đảm bảo kết nối chắc chắn</li>
+          <li>• Theo dõi quá trình sạc</li>
+          <li>• Liên hệ hỗ trợ khi có vấn đề</li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div><!-- Charging Time Comparison -->
+     <div class="bg-white rounded-2xl p-8 shadow-lg">
+      <h3 class="text-2xl font-bold mb-6 text-gray-800">So Sánh Thời Gian Sạc</h3>
+      <div class="grid md:grid-cols-3 gap-6">
+       <div class="text-center p-6 bg-blue-50 rounded-xl">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-blue-600 font-bold text-xl">B</span>
+        </div>
+        <h4 class="font-bold text-blue-600 mb-2">SOL EVC Basic</h4>
+        <p class="text-2xl font-bold text-blue-600 mb-1">3-4 giờ</p>
+        <p class="text-gray-600 text-sm">Công suất 1kW</p>
+       </div>
+       <div class="text-center p-6 bg-green-50 rounded-xl">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-green-600 font-bold text-xl">P</span>
+        </div>
+        <h4 class="font-bold text-green-600 mb-2">SOL EVC Plus</h4>
+        <p class="text-2xl font-bold text-green-600 mb-1">2-3 giờ</p>
+        <p class="text-gray-600 text-sm">Công suất 2kW</p>
+       </div>
+       <div class="text-center p-6 bg-purple-50 rounded-xl">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-purple-600 font-bold text-xl">P</span>
+        </div>
+        <h4 class="font-bold text-purple-600 mb-2">SOL EVC Pro</h4>
+        <p class="text-2xl font-bold text-purple-600 mb-1">1-2 giờ</p>
+        <p class="text-gray-600 text-sm">Công suất 3kW</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Map Section -->
+  <section id="map-section" class="hidden-section section-padding">
+   <div class="max-w-7xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Bản Đồ Trạm Sạc</h1>
+    <div class="bg-white rounded-2xl p-8 shadow-lg">
+     <div class="h-96 bg-gray-100 rounded-xl flex items-center justify-center mb-8">
+      <svg class="w-full h-full" viewbox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="800" height="400" fill="#f8fafc" /> <!-- Stations --> <circle cx="150" cy="100" r="8" fill="#3b82f6" /> <circle cx="300" cy="80" r="8" fill="#3b82f6" /> <circle cx="450" cy="120" r="8" fill="#3b82f6" /> <circle cx="600" cy="90" r="8" fill="#3b82f6" /> <circle cx="200" cy="200" r="8" fill="#10b981" /> <circle cx="350" cy="180" r="8" fill="#10b981" /> <circle cx="500" cy="220" r="8" fill="#10b981" /> <circle cx="650" cy="190" r="8" fill="#10b981" /> <circle cx="180" cy="300" r="8" fill="#8b5cf6" /> <circle cx="320" cy="280" r="8" fill="#8b5cf6" /> <circle cx="480" cy="320" r="8" fill="#8b5cf6" /> <circle cx="620" cy="290" r="8" fill="#8b5cf6" /> <!-- Roads --> <path d="M100 100 L700 100" stroke="#e5e7eb" stroke-width="3" /> <path d="M100 200 L700 200" stroke="#e5e7eb" stroke-width="3" /> <path d="M100 300 L700 300" stroke="#e5e7eb" stroke-width="3" /> <path d="M200 50 L200 350" stroke="#e5e7eb" stroke-width="2" /> <path d="M400 50 L400 350" stroke="#e5e7eb" stroke-width="2" /> <path d="M600 50 L600 350" stroke="#e5e7eb" stroke-width="2" /> <text x="400" y="50" text-anchor="middle" fill="#1f2937" font-size="24" font-weight="bold">
+        Mạng Lưới Trạm Sạc SOL EVC
+       </text>
+      </svg>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="flex items-center space-x-3">
+       <div class="w-4 h-4 bg-blue-600 rounded-full"></div><span class="text-gray-700">Trạm sạc ô tô (DC)</span>
+      </div>
+      <div class="flex items-center space-x-3">
+       <div class="w-4 h-4 bg-green-600 rounded-full"></div><span class="text-gray-700">Trạm sạc ô tô (AC)</span>
+      </div>
+      <div class="flex items-center space-x-3">
+       <div class="w-4 h-4 bg-purple-600 rounded-full"></div><span class="text-gray-700">Trạm sạc xe máy</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Partners Section -->
+  <section id="partners-section" class="hidden-section section-padding">
+   <div class="max-w-7xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Đối Tác &amp; Khách Hàng</h1><!-- Partners -->
+    <div class="mb-20">
+     <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Đối Tác Chiến Lược</h2>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="partner-logo bg-white p-6 rounded-xl shadow-lg flex items-center justify-center">
+       <div class="text-center">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2"><span class="text-red-600 font-bold text-xl">VF</span>
+        </div><span class="text-sm font-medium">VinFast</span>
+       </div>
+      </div>
+      <div class="partner-logo bg-white p-6 rounded-xl shadow-lg flex items-center justify-center">
+       <div class="text-center">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2"><span class="text-blue-600 font-bold text-xl">H</span>
+        </div><span class="text-sm font-medium">Honda</span>
+       </div>
+      </div>
+      <div class="partner-logo bg-white p-6 rounded-xl shadow-lg flex items-center justify-center">
+       <div class="text-center">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2"><span class="text-purple-600 font-bold text-xl">Y</span>
+        </div><span class="text-sm font-medium">Yamaha</span>
+       </div>
+      </div>
+      <div class="partner-logo bg-white p-6 rounded-xl shadow-lg flex items-center justify-center">
+       <div class="text-center">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2"><span class="text-green-600 font-bold text-xl">P</span>
+        </div><span class="text-sm font-medium">Pega</span>
+       </div>
+      </div>
+     </div>
+    </div><!-- Customers -->
+    <div>
+     <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Khách Hàng Tiêu Biểu</h2>
+     <div class="grid md:grid-cols-4 gap-8">
+      <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+       <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-4">Tập Đoàn Bất Động Sản</h3>
+       <p class="text-gray-600">Lắp đặt trạm sạc tại các dự án chung cư, văn phòng cao cấp</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+       <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-4">Trung Tâm Thương Mại</h3>
+       <p class="text-gray-600">Cung cấp dịch vụ sạc xe cho khách hàng mua sắm</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+       <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-4">Chuỗi Cửa Hàng Xăng</h3>
+       <p class="text-gray-600">Chuyển đổi sang trạm dịch vụ năng lượng tổng hợp</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Contact Section -->
+  <section id="contact-section" class="hidden-section section-padding">
+   <div class="max-w-4xl mx-auto px-6">
+    <h1 id="contact-title" class="text-5xl font-bold text-center mb-16 text-gray-800">Liên Hệ Với Chúng Tôi</h1><!-- Contact Info -->
+    <div class="grid md:grid-cols-3 gap-8 mb-12">
+     <div class="text-center">
+      <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+       </svg>
+      </div>
+      <h3 class="text-lg font-bold mb-2">Địa Chỉ</h3>
+      <p id="company-address" class="text-gray-600"> 24 TL12, Phường An Phú Đông, TP.Hồ Chí Minh</p>
+     </div>
+     <div class="text-center">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+       </svg>
+      </div>
+      <h3 class="text-lg font-bold mb-2">Điện Thoại</h3>
+      <p id="company-phone" class="text-gray-600">079 222 5678</p>
+     </div>
+     <div class="text-center">
+      <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+       </svg>
+      </div>
+      <h3 class="text-lg font-bold mb-2">Email</h3>
+      <p id="company-email" class="text-gray-600">info@solevc.com</p>
+     </div>
+    </div><!-- Contact Form -->
+    <div class="bg-white rounded-2xl p-8 shadow-lg">
+     <form id="contact-form" class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
+       <div><label for="name" class="block font-semibold mb-2 text-gray-700">Họ và tên</label> <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+       </div>
+       <div><label for="email" class="block font-semibold mb-2 text-gray-700">Email</label> <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+       </div>
+      </div>
+      <div><label for="phone" class="block font-semibold mb-2 text-gray-700">Số điện thoại</label> <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+      </div>
+      <div><label for="service" class="block font-semibold mb-2 text-gray-700">Dịch vụ quan tâm</label> <select id="service" name="service" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors"> <option value="">Chọn dịch vụ</option> <option value="car-ac">Trạm sạc ô tô AC</option> <option value="car-dc">Trạm sạc ô tô DC</option> <option value="motorbike-basic">SOL EVC Basic</option> <option value="motorbike-plus">SOL EVC Plus</option> <option value="motorbike-pro">SOL EVC Pro</option> <option value="consultation">Tư vấn tổng thể</option> </select>
+      </div>
+      <div><label for="message" class="block font-semibold mb-2 text-gray-700">Tin nhắn</label> <textarea id="message" name="message" rows="5" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors resize-none"></textarea>
+      </div><button type="submit" class="btn-primary bg-blue-600 text-white w-full py-4 rounded-lg font-semibold text-lg hover:bg-blue-700"> Gửi Tin Nhắn </button>
+     </form>
+     <div id="form-message" class="mt-4 p-4 rounded-lg hidden"></div>
+    </div>
+   </div>
+  </section><!-- News Section -->
+  <section id="news-section" class="hidden-section section-padding">
+   <div class="max-w-7xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Tin Tức &amp; Cập Nhật</h1>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- News Item 1 -->
+     <article class="news-card bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-full h-48 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl mb-4 flex items-center justify-center">
+       <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+       </svg>
+      </div>
+      <div class="text-sm text-gray-500 mb-2">
+       15/12/2024
+      </div>
+      <h3 class="text-xl font-bold mb-3 text-gray-800">Ra Mắt Trạm Sạc DC 150kW Mới</h3>
+      <p class="text-gray-600 mb-4">SOL EVC chính thức ra mắt dòng trạm sạc DC công suất 150kW, giúp rút ngắn thời gian sạc xuống còn 30 phút.</p><a href="#" class="text-blue-600 font-semibold hover:text-blue-800">Đọc thêm →</a>
+     </article><!-- News Item 2 -->
+     <article class="news-card bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-full h-48 bg-gradient-to-r from-green-400 to-green-600 rounded-xl mb-4 flex items-center justify-center">
+       <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+       </svg>
+      </div>
+      <div class="text-sm text-gray-500 mb-2">
+       10/12/2024
+      </div>
+      <h3 class="text-xl font-bold mb-3 text-gray-800">Mở Rộng 50 Trạm Sạc Mới</h3>
+      <p class="text-gray-600 mb-4">Trong tháng 12, SOL EVC sẽ mở rộng thêm 50 trạm sạc tại các tỉnh thành phía Nam, nâng tổng số lên 500 trạm.</p><a href="#" class="text-blue-600 font-semibold hover:text-blue-800">Đọc thêm →</a>
+     </article><!-- News Item 3 -->
+     <article class="news-card bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-full h-48 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl mb-4 flex items-center justify-center">
+       <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+       </svg>
+      </div>
+      <div class="text-sm text-gray-500 mb-2">
+       05/12/2024
+      </div>
+      <h3 class="text-xl font-bold mb-3 text-gray-800">Hợp Tác Với VinFast</h3>
+      <p class="text-gray-600 mb-4">SOL EVC ký kết hợp tác chiến lược với VinFast để phát triển hệ thống sạc toàn diện cho xe điện VinFast.</p><a href="#" class="text-blue-600 font-semibold hover:text-blue-800">Đọc thêm →</a>
+     </article><!-- News Item 4 -->
+     <article class="news-card bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-full h-48 bg-gradient-to-r from-red-400 to-red-600 rounded-xl mb-4 flex items-center justify-center">
+       <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+       </svg>
+      </div>
+      <div class="text-sm text-gray-500 mb-2">
+       01/12/2024
+      </div>
+      <h3 class="text-xl font-bold mb-3 text-gray-800">Chứng Nhận ISO 9001:2015</h3>
+      <p class="text-gray-600 mb-4">SOL EVC chính thức đạt chứng nhận ISO 9001:2015 về hệ thống quản lý chất lượng trong lĩnh vực sạc xe điện.</p><a href="#" class="text-blue-600 font-semibold hover:text-blue-800">Đọc thêm →</a>
+     </article><!-- News Item 5 -->
+     <article class="news-card bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-full h-48 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-xl mb-4 flex items-center justify-center">
+       <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+       </svg>
+      </div>
+      <div class="text-sm text-gray-500 mb-2">
+       25/11/2024
+      </div>
+      <h3 class="text-xl font-bold mb-3 text-gray-800">Ưu Đãi Cuối Năm</h3>
+      <p class="text-gray-600 mb-4">Chương trình ưu đãi lắp đặt trạm sạc với mức giảm giá lên đến 30% cho khách hàng doanh nghiệp.</p><a href="#" class="text-blue-600 font-semibold hover:text-blue-800">Đọc thêm →</a>
+     </article><!-- News Item 6 -->
+     <article class="news-card bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-full h-48 bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-xl mb-4 flex items-center justify-center">
+       <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+       </svg>
+      </div>
+      <div class="text-sm text-gray-500 mb-2">
+       20/11/2024
+      </div>
+      <h3 class="text-xl font-bold mb-3 text-gray-800">Công Nghệ Sạc Thông Minh</h3>
+      <p class="text-gray-600 mb-4">Ra mắt ứng dụng SOL EVC App với tính năng đặt chỗ trước, thanh toán tự động và theo dõi quá trình sạc.</p><a href="#" class="text-blue-600 font-semibold hover:text-blue-800">Đọc thêm →</a>
+     </article>
+    </div>
+   </div>
+  </section><!-- Guide Section -->
+  <section id="guide-section" class="hidden-section section-padding">
+   <div class="max-w-7xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Hướng Dẫn Sử Dụng</h1><!-- Car Charging Guide -->
+    <div class="mb-20">
+     <h2 class="text-3xl font-bold mb-12 text-gray-800">Hướng Dẫn Sạc Xe Ô Tô</h2>
+     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="step-card bg-white rounded-2xl p-6 shadow-lg relative">
+       <div class="step-number">
+        1
+       </div>
+       <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        </svg>
+       </div>
+       <h3 class="text-lg font-bold mb-2 text-center">Tìm Trạm Sạc</h3>
+       <p class="text-gray-600 text-center text-sm">Sử dụng app SOL EVC hoặc website để tìm trạm sạc gần nhất</p>
+      </div>
+      <div class="step-card bg-white rounded-2xl p-6 shadow-lg relative">
+       <div class="step-number">
+        2
+       </div>
+       <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+       </div>
+       <h3 class="text-lg font-bold mb-2 text-center">Xác Thực</h3>
+       <p class="text-gray-600 text-center text-sm">Quét mã QR hoặc sử dụng thẻ RFID để xác thực tài khoản</p>
+      </div>
+      <div class="step-card bg-white rounded-2xl p-6 shadow-lg relative">
+       <div class="step-number">
+        3
+       </div>
+       <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+       </div>
+       <h3 class="text-lg font-bold mb-2 text-center">Kết Nối</h3>
+       <p class="text-gray-600 text-center text-sm">Cắm dây sạc vào cổng sạc của xe, đảm bảo kết nối chắc chắn</p>
+      </div>
+      <div class="step-card bg-white rounded-2xl p-6 shadow-lg relative">
+       <div class="step-number">
+        4
+       </div>
+       <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+        </svg>
+       </div>
+       <h3 class="text-lg font-bold mb-2 text-center">Thanh Toán</h3>
+       <p class="text-gray-600 text-center text-sm">Chọn phương thức thanh toán và bắt đầu quá trình sạc</p>
+      </div>
+     </div>
+    </div><!-- Motorbike Charging Guide -->
+    <div class="mb-20">
+     <h2 class="text-3xl font-bold mb-12 text-gray-800">Hướng Dẫn Sạc Xe Máy</h2>
+     <div class="grid md:grid-cols-4 gap-8">
+      <div class="bg-white rounded-2xl p-8 shadow-lg">
+       <h3 class="text-xl font-bold mb-6 text-blue-600">Chuẩn Bị</h3>
+       <ul class="space-y-3 text-gray-600">
+        <li class="flex items-start"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2"></span> <span>Kiểm tra loại cục sạc phù hợp với xe</span></li>
+        <li class="flex items-start"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2"></span> <span>Đảm bảo xe đã tắt máy hoàn toàn</span></li>
+        <li class="flex items-start"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2"></span> <span>Mở nắp cổng sạc trên xe</span></li>
+       </ul>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-lg">
+       <h3 class="text-xl font-bold mb-6 text-green-600">Sạc Pin</h3>
+       <ul class="space-y-3 text-gray-600">
+        <li class="flex items-start"><span class="w-2 h-2 bg-green-600 rounded-full mr-3 mt-2"></span> <span>Cắm cục sạc vào ổ điện trạm sạc</span></li>
+        <li class="flex items-start"><span class="w-2 h-2 bg-green-600 rounded-full mr-3 mt-2"></span> <span>Kết nối dây sạc với cổng sạc xe</span></li>
+        <li class="flex items-start"><span class="w-2 h-2 bg-green-600 rounded-full mr-3 mt-2"></span> <span>Theo dõi đèn báo trên cục sạc</span></li>
+       </ul>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-lg">
+       <h3 class="text-xl font-bold mb-6 text-purple-600">Hoàn Thành</h3>
+       <ul class="space-y-3 text-gray-600">
+        <li class="flex items-start"><span class="w-2 h-2 bg-purple-600 rounded-full mr-3 mt-2"></span> <span>Đèn xanh báo hiệu sạc đầy</span></li>
+        <li class="flex items-start"><span class="w-2 h-2 bg-purple-600 rounded-full mr-3 mt-2"></span> <span>Rút dây sạc khỏi xe trước</span></li>
+        <li class="flex items-start"><span class="w-2 h-2 bg-purple-600 rounded-full mr-3 mt-2"></span> <span>Rút cục sạc khỏi ổ điện</span></li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- Safety Tips -->
+    <div>
+     <h2 class="text-3xl font-bold mb-12 text-gray-800">Lưu Ý An Toàn</h2>
+     <div class="bg-red-50 border-l-4 border-red-500 rounded-lg p-8">
+      <div class="grid md:grid-cols-2 gap-8">
+       <div>
+        <h3 class="text-xl font-bold mb-4 text-red-700">⚠️ Cần Tránh</h3>
+        <ul class="space-y-2 text-red-600">
+         <li>• Không sạc khi trời mưa to</li>
+         <li>• Không để nước vào cổng sạc</li>
+         <li>• Không sử dụng dây sạc bị hỏng</li>
+         <li>• Không để trẻ em tiếp xúc</li>
+        </ul>
+       </div>
+       <div>
+        <h3 class="text-xl font-bold mb-4 text-green-700">✅ Nên Làm</h3>
+        <ul class="space-y-2 text-green-600">
+         <li>• Kiểm tra dây sạc trước khi sử dụng</li>
+         <li>• Đảm bảo kết nối chắc chắn</li>
+         <li>• Theo dõi quá trình sạc</li>
+         <li>• Liên hệ hỗ trợ khi có vấn đề</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- FAQ Section -->
+  <section id="faq-section" class="hidden-section section-padding">
+   <div class="max-w-4xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Câu Hỏi Thường Gặp</h1>
+    <div class="space-y-4"><!-- FAQ Item 1 -->
+     <div class="faq-item bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+       <h3 class="text-lg font-semibold text-gray-800">Làm thế nào để tìm trạm sạc SOL EVC gần nhất?</h3>
+       <svg class="w-6 h-6 text-gray-500 transform transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+       </svg>
+      </div>
+      <div class="faq-answer px-6 pb-6">
+       <p class="text-gray-600">Bạn có thể sử dụng ứng dụng SOL EVC trên điện thoại hoặc truy cập website để xem bản đồ trạm sạc. Hệ thống sẽ hiển thị các trạm sạc gần nhất, tình trạng hoạt động và thời gian ước tính để đến đó.</p>
+      </div>
+     </div><!-- FAQ Item 2 -->
+     <div class="faq-item bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+       <h3 class="text-lg font-semibold text-gray-800">Thời gian sạc đầy pin xe điện là bao lâu?</h3>
+       <svg class="w-6 h-6 text-gray-500 transform transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+       </svg>
+      </div>
+      <div class="faq-answer px-6 pb-6">
+       <p class="text-gray-600">Thời gian sạc phụ thuộc vào loại trạm sạc và dung lượng pin xe:</p>
+       <ul class="mt-2 space-y-1 text-gray-600">
+        <li>• Trạm AC (7-22kW): 4-8 giờ</li>
+        <li>• Trạm DC (50-150kW): 30-60 phút</li>
+        <li>• Xe máy điện: 1-4 giờ tùy mạch sạc</li>
+       </ul>
+      </div>
+     </div><!-- FAQ Item 3 -->
+     <div class="faq-item bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+       <h3 class="text-lg font-semibold text-gray-800">Các phương thức thanh toán nào được hỗ trợ?</h3>
+       <svg class="w-6 h-6 text-gray-500 transform transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+       </svg>
+      </div>
+      <div class="faq-answer px-6 pb-6">
+       <p class="text-gray-600">SOL EVC hỗ trợ nhiều phương thức thanh toán linh hoạt:</p>
+       <ul class="mt-2 space-y-1 text-gray-600">
+        <li>• Thẻ tín dụng/ghi nợ</li>
+        <li>• Ví điện tử (MoMo, ZaloPay, VNPay)</li>
+        <li>• Thẻ RFID SOL EVC</li>
+        <li>• Thanh toán qua ứng dụng</li>
+       </ul>
+      </div>
+     </div><!-- FAQ Item 4 -->
+     <div class="faq-item bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+       <h3 class="text-lg font-semibold text-gray-800">Xe của tôi có tương thích với trạm sạc SOL EVC không?</h3>
+       <svg class="w-6 h-6 text-gray-500 transform transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+       </svg>
+      </div>
+      <div class="faq-answer px-6 pb-6">
+       <p class="text-gray-600">SOL EVC hỗ trợ tất cả các hãng xe điện phổ biến:</p>
+       <ul class="mt-2 space-y-1 text-gray-600">
+        <li>• Ô tô: VinFast, Tesla, BMW, Mercedes, Hyundai, v.v.</li>
+        <li>• Xe máy: VinFast, Honda, Yamaha, Pega, Yadea, v.v.</li>
+        <li>• Chuẩn kết nối: Type 2, CCS2, CHAdeMO</li>
+       </ul>
+      </div>
+     </div><!-- FAQ Item 5 -->
+     <div class="faq-item bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+       <h3 class="text-lg font-semibold text-gray-800">Có thể đặt chỗ trước tại trạm sạc không?</h3>
+       <svg class="w-6 h-6 text-gray-500 transform transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+       </svg>
+      </div>
+      <div class="faq-answer px-6 pb-6">
+       <p class="text-gray-600">Có, bạn có thể đặt chỗ trước thông qua ứng dụng SOL EVC. Tính năng này giúp đảm bảo có trạm sạc sẵn sàng khi bạn đến, đặc biệt hữu ích trong giờ cao điểm hoặc tại các địa điểm đông đúc.</p>
+      </div>
+     </div><!-- FAQ Item 6 -->
+     <div class="faq-item bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+       <h3 class="text-lg font-semibold text-gray-800">Nếu gặp sự cố khi sạc thì phải làm gì?</h3>
+       <svg class="w-6 h-6 text-gray-500 transform transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+       </svg>
+      </div>
+      <div class="faq-answer px-6 pb-6">
+       <p class="text-gray-600">Khi gặp sự cố, bạn có thể:</p>
+       <ul class="mt-2 space-y-1 text-gray-600">
+        <li>• Gọi hotline 24/7: 079 222 5678</li>
+        <li>• Báo cáo qua ứng dụng SOL EVC</li>
+        <li>• Sử dụng nút khẩn cấp tại trạm sạc</li>
+        <li>• Đội ngũ kỹ thuật sẽ hỗ trợ trong vòng 15 phút</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Support Section -->
+  <section id="support-section" class="hidden-section section-padding">
+   <div class="max-w-6xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Liên Hệ Hỗ Trợ</h1><!-- Support Channels -->
+    <div class="grid md:grid-cols-3 gap-8 mb-16">
+     <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+      <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+       <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+       </svg>
+      </div>
+      <h3 class="text-xl font-bold mb-4 text-red-600">Hotline Khẩn Cấp</h3>
+      <p class="text-2xl font-bold mb-2">079 222 5678</p>
+      <p class="text-gray-600 mb-4">Hỗ trợ 24/7 cho các trường hợp khẩn cấp</p><span class="inline-block bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">Ưu tiên cao</span>
+     </div>
+     <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+      <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+       <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+       </svg>
+      </div>
+      <h3 class="text-xl font-bold mb-4 text-blue-600">Chat Trực Tuyến</h3>
+      <p class="text-lg font-semibold mb-2">Hỗ trợ tức thì</p>
+      <p class="text-gray-600 mb-4">Thời gian: 6:00 - 22:00 hàng ngày</p><button class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700"> Bắt đầu chat </button>
+     </div>
+     <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+       <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+       </svg>
+      </div>
+      <h3 class="text-xl font-bold mb-4 text-green-600">Email Hỗ Trợ</h3>
+      <p class="text-lg font-semibold mb-2">support@solevc.com</p>
+      <p class="text-gray-600 mb-4">Phản hồi trong vòng 2-4 giờ</p><span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold">Phổ biến</span>
+     </div>
+    </div><!-- Support Form -->
+    <div class="bg-white rounded-2xl p-8 shadow-lg">
+     <h2 class="text-2xl font-bold mb-6 text-gray-800">Gửi Yêu Cầu Hỗ Trợ</h2>
+     <form id="support-form" class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
+       <div><label for="support-name" class="block font-semibold mb-2 text-gray-700">Họ và tên *</label> <input type="text" id="support-name" name="name" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+       </div>
+       <div><label for="support-email" class="block font-semibold mb-2 text-gray-700">Email *</label> <input type="email" id="support-email" name="email" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+       </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+       <div><label for="support-phone" class="block font-semibold mb-2 text-gray-700">Số điện thoại</label> <input type="tel" id="support-phone" name="phone" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+       </div>
+       <div><label for="support-priority" class="block font-semibold mb-2 text-gray-700">Mức độ ưu tiên *</label> <select id="support-priority" name="priority" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors"> <option value="">Chọn mức độ</option> <option value="low">Thấp - Câu hỏi chung</option> <option value="medium">Trung bình - Cần hỗ trợ</option> <option value="high">Cao - Sự cố khẩn cấp</option> </select>
+       </div>
+      </div>
+      <div><label for="support-category" class="block font-semibold mb-2 text-gray-700">Danh mục vấn đề *</label> <select id="support-category" name="category" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors"> <option value="">Chọn danh mục</option> <option value="charging-issue">Sự cố sạc xe</option> <option value="payment-issue">Vấn đề thanh toán</option> <option value="app-issue">Lỗi ứng dụng</option> <option value="account-issue">Vấn đề tài khoản</option> <option value="station-issue">Sự cố trạm sạc</option> <option value="other">Khác</option> </select>
+      </div>
+      <div><label for="support-subject" class="block font-semibold mb-2 text-gray-700">Tiêu đề *</label> <input type="text" id="support-subject" name="subject" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors" placeholder="Mô tả ngắn gọn vấn đề">
+      </div>
+      <div><label for="support-message" class="block font-semibold mb-2 text-gray-700">Mô tả chi tiết *</label> <textarea id="support-message" name="message" rows="6" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors resize-none" placeholder="Vui lòng mô tả chi tiết vấn đề bạn gặp phải..."></textarea>
+      </div><button type="submit" class="btn-primary bg-blue-600 text-white w-full py-4 rounded-lg font-semibold text-lg hover:bg-blue-700"> Gửi Yêu Cầu Hỗ Trợ </button>
+     </form>
+     <div id="support-message-result" class="mt-4 p-4 rounded-lg hidden"></div>
+    </div>
+   </div>
+  </section><!-- Maintenance Section -->
+  <section id="maintenance-section" class="hidden-section section-padding">
+   <div class="max-w-7xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Dịch Vụ Bảo Trì Hệ Thống</h1><!-- Overview -->
+    <div class="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-8 mb-16">
+     <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+       </svg>
+      </div>
+      <h2 class="text-3xl font-bold mb-4 text-gray-800">Bảo Trì Chuyên Nghiệp - Vận Hành Ổn Định</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">SOL EVC cung cấp dịch vụ bảo trì toàn diện để đảm bảo hệ thống trạm sạc hoạt động ổn định, an toàn và hiệu quả 24/7</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 text-center">
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+       <div class="text-3xl font-bold text-blue-600 mb-2">
+        500+
+       </div>
+       <div class="text-gray-600">
+        Trạm được bảo trì
+       </div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+       <div class="text-3xl font-bold text-green-600 mb-2">
+        99.8%
+       </div>
+       <div class="text-gray-600">
+        Thời gian hoạt động
+       </div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg">
+       <div class="text-3xl font-bold text-purple-600 mb-2">
+        24/7
+       </div>
+       <div class="text-gray-600">
+        Hỗ trợ khẩn cấp
+       </div>
+      </div>
+     </div>
+    </div><!-- Main Services -->
+    <div class="grid md:grid-cols-2 gap-12 mb-20"><!-- Preventive Maintenance -->
+     <div class="bg-white rounded-2xl p-8 shadow-lg">
+      <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6">
+       <svg class="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0-8h2m-2 0V3m0 2v2m0 0h2m-2 0H9m2 0v2m0 0h2" />
+       </svg>
+      </div>
+      <h3 class="text-2xl font-bold mb-4 text-yellow-600">Bảo Trì Định Kỳ</h3>
+      <p class="text-gray-600 mb-6">Chương trình bảo trì phòng ngừa để đảm bảo hiệu suất tối ưu và kéo dài tuổi thọ thiết bị</p>
+      <div class="space-y-4">
+       <div class="border-l-4 border-yellow-500 pl-4">
+        <h4 class="font-semibold text-gray-800 mb-2">Kiểm Tra Hàng Tháng</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+         <li>• Kiểm tra tình trạng dây cáp và đầu nối</li>
+         <li>• Đo điện áp, dòng điện và nhiệt độ</li>
+         <li>• Kiểm tra hệ thống làm mát và thông gió</li>
+         <li>• Vệ sinh bề mặt và các bộ phận tiếp xúc</li>
+        </ul>
+       </div>
+       <div class="border-l-4 border-yellow-500 pl-4">
+        <h4 class="font-semibold text-gray-800 mb-2">Bảo Dưỡng Định Kỳ</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+         <li>• Cập nhật firmware và phần mềm hệ thống</li>
+         <li>• Hiệu chuẩn cảm biến và đồng hồ đo</li>
+         <li>• Kiểm tra và thay thế bộ lọc không khí</li>
+         <li>• Bôi trơn các bộ phận cơ khí</li>
+        </ul>
+       </div>
+       <div class="border-l-4 border-yellow-500 pl-4">
+        <h4 class="font-semibold text-gray-800 mb-2">Kiểm Tra An Toàn</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+         <li>• Test hệ thống chống rò rỉ điện (RCD)</li>
+         <li>• Kiểm tra hệ thống chống sét và nối đất</li>
+         <li>• Đánh giá tình trạng vỏ bảo vệ và khóa an toàn</li>
+         <li>• Kiểm tra hệ thống báo cháy và khẩn cấp</li>
+        </ul>
+       </div>
+      </div>
+     </div><!-- Emergency Repair -->
+     <div class="bg-white rounded-2xl p-8 shadow-lg">
+      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
+       <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+       </svg>
+      </div>
+      <h3 class="text-2xl font-bold mb-4 text-red-600">Sửa Chữa Khẩn Cấp</h3>
+      <p class="text-gray-600 mb-6">Dịch vụ sửa chữa nhanh chóng 24/7 để khôi phục hoạt động trạm sạc trong thời gian ngắn nhất</p>
+      <div class="space-y-4">
+       <div class="border-l-4 border-red-500 pl-4">
+        <h4 class="font-semibold text-gray-800 mb-2">Phản Ứng Nhanh</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+         <li>• Hotline 24/7: 079 222 5678</li>
+         <li>• Thời gian phản hồi: &lt; 15 phút</li>
+         <li>• Đội ngũ kỹ thuật có mặt trong 2 giờ</li>
+         <li>• Hỗ trợ từ xa qua hệ thống giám sát</li>
+        </ul>
+       </div>
+       <div class="border-l-4 border-red-500 pl-4">
+        <h4 class="font-semibold text-gray-800 mb-2">Sửa Chữa Chuyên Nghiệp</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+         <li>• Thay thế linh kiện chính hãng</li>
+         <li>• Sửa chữa bo mạch và hệ thống điều khiển</li>
+         <li>• Khắc phục sự cố phần mềm và firmware</li>
+         <li>• Sửa chữa hệ thống cơ khí và làm mát</li>
+        </ul>
+       </div>
+       <div class="border-l-4 border-red-500 pl-4">
+        <h4 class="font-semibold text-gray-800 mb-2">Bảo Hành Dịch Vụ</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+         <li>• Bảo hành linh kiện thay thế: 12 tháng</li>
+         <li>• Bảo hành công việc sửa chữa: 6 tháng</li>
+         <li>• Hỗ trợ kỹ thuật miễn phí sau sửa chữa</li>
+         <li>• Cam kết chất lượng và độ tin cậy</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div><!-- Technical Services -->
+    <div class="mb-20">
+     <h2 class="text-3xl font-bold mb-12 text-gray-800 text-center">Dịch Vụ Kỹ Thuật Chuyên Sâu</h2>
+     <div class="grid md:grid-cols-3 gap-8"><!-- System Upgrade -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+       <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-3 text-blue-600 text-center">Nâng Cấp Hệ Thống</h3>
+       <ul class="text-sm text-gray-600 space-y-2">
+        <li>• Nâng cấp công suất sạc</li>
+        <li>• Cập nhật phần mềm quản lý</li>
+        <li>• Tích hợp tính năng mới</li>
+        <li>• Cải thiện giao diện người dùng</li>
+        <li>• Tối ưu hóa hiệu suất</li>
+       </ul>
+      </div><!-- Performance Optimization -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+       <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-3 text-green-600 text-center">Tối Ưu Hiệu Suất</h3>
+       <ul class="text-sm text-gray-600 space-y-2">
+        <li>• Phân tích hiệu suất hệ thống</li>
+        <li>• Tối ưu thời gian sạc</li>
+        <li>• Giảm tiêu thụ năng lượng</li>
+        <li>• Cải thiện độ ổn định</li>
+        <li>• Báo cáo hiệu suất định kỳ</li>
+       </ul>
+      </div><!-- Remote Monitoring -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+       <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-3 text-purple-600 text-center">Giám Sát Từ Xa</h3>
+       <ul class="text-sm text-gray-600 space-y-2">
+        <li>• Giám sát 24/7 qua IoT</li>
+        <li>• Cảnh báo sự cố tự động</li>
+        <li>• Phân tích dữ liệu vận hành</li>
+        <li>• Dự đoán bảo trì proactive</li>
+        <li>• Dashboard quản lý trực tuyến</li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- Maintenance Plans -->
+    <div class="mb-20">
+     <h2 class="text-3xl font-bold mb-12 text-gray-800 text-center">Gói Dịch Vụ Bảo Trì</h2>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Basic Plan -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-200 hover:border-blue-500 transition-colors">
+       <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-gray-600">B</span>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Gói Cơ Bản</h3>
+        <div class="text-3xl font-bold text-blue-600 mb-1">
+         2.5 triệu
+        </div>
+        <div class="text-gray-500">
+         VNĐ/tháng/trạm
+        </div>
+       </div>
+       <ul class="space-y-3 text-gray-600 mb-8">
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Kiểm tra định kỳ hàng tháng</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Vệ sinh và bảo dưỡng cơ bản</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Hỗ trợ kỹ thuật trong giờ hành chính</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Báo cáo tình trạng hàng tháng</li>
+       </ul><button class="w-full bg-gray-600 text-white py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"> Chọn Gói Cơ Bản </button>
+      </div><!-- Premium Plan -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg border-2 border-blue-500 relative">
+       <div class="absolute -top-4 left-1/2 transform -translate-x-1/2"><span class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">Phổ Biến</span>
+       </div>
+       <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-blue-600">P</span>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Gói Cao Cấp</h3>
+        <div class="text-3xl font-bold text-blue-600 mb-1">
+         4.5 triệu
+        </div>
+        <div class="text-gray-500">
+         VNĐ/tháng/trạm
+        </div>
+       </div>
+       <ul class="space-y-3 text-gray-600 mb-8">
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Tất cả tính năng gói Cơ Bản</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Giám sát từ xa 24/7</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Hỗ trợ khẩn cấp 24/7</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Bảo trì dự phòng thông minh</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Cập nhật phần mềm miễn phí</li>
+       </ul><button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"> Chọn Gói Cao Cấp </button>
+      </div><!-- Enterprise Plan -->
+      <div class="bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-200 hover:border-purple-500 transition-colors">
+       <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-purple-600">E</span>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Gói Doanh Nghiệp</h3>
+        <div class="text-3xl font-bold text-purple-600 mb-1">
+         Tùy chỉnh
+        </div>
+        <div class="text-gray-500">
+         Theo yêu cầu
+        </div>
+       </div>
+       <ul class="space-y-3 text-gray-600 mb-8">
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Tất cả tính năng gói Cao Cấp</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Quản lý đa trạm tập trung</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Tích hợp hệ thống quản lý riêng</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> Đội ngũ kỹ thuật chuyên trách</li>
+        <li class="flex items-center">
+         <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+         </svg> SLA cam kết 99.9% uptime</li>
+       </ul><button class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"> Liên Hệ Tư Vấn </button>
+      </div>
+     </div>
+    </div><!-- Process -->
+    <div class="mb-20">
+     <h2 class="text-3xl font-bold mb-12 text-gray-800 text-center">Quy Trình Bảo Trì Chuyên Nghiệp</h2>
+     <div class="grid md:grid-cols-4 gap-6">
+      <div class="text-center">
+       <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-blue-600">1</span>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Lập Kế Hoạch</h3>
+       <p class="text-gray-600 text-sm">Đánh giá tình trạng và lập lịch bảo trì phù hợp</p>
+      </div>
+      <div class="text-center">
+       <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-green-600">2</span>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Thực Hiện</h3>
+       <p class="text-gray-600 text-sm">Kỹ thuật viên chuyên nghiệp thực hiện bảo trì</p>
+      </div>
+      <div class="text-center">
+       <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-purple-600">3</span>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Kiểm Tra</h3>
+       <p class="text-gray-600 text-sm">Test toàn bộ hệ thống và xác nhận hoạt động</p>
+      </div>
+      <div class="text-center">
+       <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-2xl font-bold text-orange-600">4</span>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Báo Cáo</h3>
+       <p class="text-gray-600 text-sm">Cung cấp báo cáo chi tiết và khuyến nghị</p>
+      </div>
+     </div>
+    </div><!-- Contact CTA -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white">
+     <h2 class="text-3xl font-bold mb-4">Cần Tư Vấn Dịch Vụ Bảo Trì?</h2>
+     <p class="text-xl mb-6 opacity-90">Đội ngũ chuyên gia của chúng tôi sẵn sàng hỗ trợ bạn 24/7</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center"><button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors nav-link" data-section="contact"> Liên Hệ Ngay </button> <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"> 📞 0123 456 789 </button>
+     </div>
+    </div>
+   </div>
+  </section><!-- Report Section -->
+  <section id="report-section" class="hidden-section section-padding">
+   <div class="max-w-6xl mx-auto px-6">
+    <h1 class="text-5xl font-bold text-center mb-16 text-gray-800">Báo Cáo Sự Cố</h1><!-- Emergency Notice -->
+    <div class="bg-red-50 border-l-4 border-red-500 rounded-lg p-6 mb-12">
+     <div class="flex items-center mb-4">
+      <svg class="w-8 h-8 text-red-600 mr-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+      </svg>
+      <h2 class="text-xl font-bold text-red-700">Trường Hợp Khẩn Cấp</h2>
+     </div>
+     <p class="text-red-600 mb-4">Nếu bạn gặp sự cố nghiêm trọng hoặc nguy hiểm, vui lòng gọi ngay:</p>
+     <div class="flex flex-col sm:flex-row gap-4"><a href="tel:079 222 5678" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:bg-red-700"> 📞 Hotline Khẩn Cấp: 079 222 5678 </a> <button class="bg-red-100 text-red-600 px-6 py-3 rounded-lg font-semibold border-2 border-red-600 hover:bg-red-200"> 🚨 Nút Khẩn Cấp Tại Trạm </button>
+     </div>
+    </div><!-- Report Categories -->
+    <div class="grid md:grid-cols-3 gap-8 mb-12">
+     <div class="priority-high bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+       </svg>
+      </div>
+      <h3 class="text-lg font-bold mb-3 text-red-600 text-center">Sự Cố Nghiêm Trọng</h3>
+      <ul class="text-sm text-gray-600 space-y-2">
+       <li>• Cháy nổ, khói bất thường</li>
+       <li>• Giật điện, rò rỉ điện</li>
+       <li>• Hư hỏng nghiêm trọng thiết bị</li>
+       <li>• Tai nạn tại trạm sạc</li>
+      </ul>
+      <div class="mt-4 text-center"><span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">Ưu tiên cao</span>
+      </div>
+     </div>
+     <div class="priority-medium bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+       </svg>
+      </div>
+      <h3 class="text-lg font-bold mb-3 text-yellow-600 text-center">Sự Cố Trung Bình</h3>
+      <ul class="text-sm text-gray-600 space-y-2">
+       <li>• Trạm sạc không hoạt động</li>
+       <li>• Lỗi thanh toán</li>
+       <li>• Dây sạc bị hỏng</li>
+       <li>• Màn hình hiển thị lỗi</li>
+      </ul>
+      <div class="mt-4 text-center"><span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs font-semibold">Ưu tiên trung bình</span>
+      </div>
+     </div>
+     <div class="priority-low bg-white rounded-2xl p-6 shadow-lg">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+       </svg>
+      </div>
+      <h3 class="text-lg font-bold mb-3 text-green-600 text-center">Vấn Đề Nhỏ</h3>
+      <ul class="text-sm text-gray-600 space-y-2">
+       <li>• Vệ sinh trạm sạc</li>
+       <li>• Đèn chiếu sáng hỏng</li>
+       <li>• Biển báo bị che khuất</li>
+       <li>• Góp ý cải thiện dịch vụ</li>
+      </ul>
+      <div class="mt-4 text-center"><span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold">Ưu tiên thấp</span>
+      </div>
+     </div>
+    </div><!-- Report Form -->
+    <div class="report-form rounded-2xl p-8 shadow-lg">
+     <h2 class="text-2xl font-bold mb-6 text-gray-800">Báo Cáo Sự Cố Chi Tiết</h2>
+     <form id="report-form" class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-6">
+       <div><label for="report-name" class="block font-semibold mb-2 text-gray-700">Họ và tên *</label> <input type="text" id="report-name" name="name" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+       </div>
+       <div><label for="report-phone" class="block font-semibold mb-2 text-gray-700">Số điện thoại *</label> <input type="tel" id="report-phone" name="phone" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+       </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+       <div><label for="report-station" class="block font-semibold mb-2 text-gray-700">Mã trạm sạc *</label> <input type="text" id="report-station" name="station" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors" placeholder="VD: SOL-HCM-001">
+       </div>
+       <div><label for="report-location" class="block font-semibold mb-2 text-gray-700">Địa điểm</label> <input type="text" id="report-location" name="location" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors" placeholder="Địa chỉ cụ thể">
+       </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+       <div><label for="report-type" class="block font-semibold mb-2 text-gray-700">Loại sự cố *</label> <select id="report-type" name="type" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors"> <option value="">Chọn loại sự cố</option> <option value="safety">An toàn - Khẩn cấp</option> <option value="equipment">Thiết bị hỏng hóc</option> <option value="payment">Lỗi thanh toán</option> <option value="software">Lỗi phần mềm</option> <option value="maintenance">Vệ sinh - Bảo trì</option> <option value="other">Khác</option> </select>
+       </div>
+       <div><label for="report-severity" class="block font-semibold mb-2 text-gray-700">Mức độ nghiêm trọng *</label> <select id="report-severity" name="severity" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors"> <option value="">Chọn mức độ</option> <option value="critical">Nghiêm trọng - Nguy hiểm</option> <option value="high">Cao - Cần xử lý ngay</option> <option value="medium">Trung bình - Trong ngày</option> <option value="low">Thấp - Không gấp</option> </select>
+       </div>
+      </div>
+      <div><label for="report-time" class="block font-semibold mb-2 text-gray-700">Thời gian xảy ra sự cố</label> <input type="datetime-local" id="report-time" name="time" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors">
+      </div>
+      <div><label for="report-description" class="block font-semibold mb-2 text-gray-700">Mô tả chi tiết sự cố *</label> <textarea id="report-description" name="description" rows="6" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-blue-500 transition-colors resize-none" placeholder="Vui lòng mô tả chi tiết những gì đã xảy ra, các bước bạn đã thực hiện, và tình trạng hiện tại..."></textarea>
+      </div>
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+       <h4 class="font-semibold text-blue-800 mb-2">💡 Mẹo báo cáo hiệu quả:</h4>
+       <ul class="text-sm text-blue-700 space-y-1">
+        <li>• Cung cấp mã trạm sạc chính xác (thường có trên màn hình hoặc biển báo)</li>
+        <li>• Mô tả chi tiết các bước đã thực hiện trước khi gặp sự cố</li>
+        <li>• Ghi chú thời gian chính xác để hỗ trợ điều tra</li>
+        <li>• Chụp ảnh nếu có thể (gửi qua email sau)</li>
+       </ul>
+      </div><button type="submit" class="btn-primary bg-red-600 text-white w-full py-4 rounded-lg font-semibold text-lg hover:bg-red-700"> 🚨 Gửi Báo Cáo Sự Cố </button>
+     </form>
+     <div id="report-message-result" class="mt-4 p-4 rounded-lg hidden"></div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-4 gap-8">
+     <div>
+      <img src="assets/images/LOGO SOLEVC.png"
+         alt="SOL EVC Logo"
+         class=" h-10 w-auto mb-4">
+    <p class="text-gray-400 mb-4">
+      <p class="text-gray-400">Hệ thống trạm sạc xe điện thông minh hàng đầu Việt Nam</p>
+     </div>
+     <div>
+      <h4 class="text-lg font-bold mb-4">Dịch Vụ</h4>
+      <ul class="space-y-2 text-gray-400">
+       <li><a href="#" class="hover:text-white nav-link" data-section="services">Trạm sạc ô tô</a></li>
+       <li><a href="#" class="hover:text-white nav-link" data-section="services">Trạm sạc xe máy</a></li>
+       <li><a href="#" class="hover:text-white nav-link" data-section="contact">Tư vấn lắp đặt</a></li>
+       <li><a href="#" class="hover:text-white nav-link" data-section="maintenance">Bảo trì hệ thống</a></li>
+      </ul>
+     </div>
+     <div>
+      <h4 class="text-lg font-bold mb-4">Hỗ Trợ</h4>
+      <ul class="space-y-2 text-gray-400">
+       <li><a href="#" class="hover:text-white">Hướng dẫn sử dụng</a></li>
+       <li><a href="#" class="hover:text-white">Câu hỏi thường gặp</a></li>
+       <li><a href="#" class="hover:text-white">Liên hệ hỗ trợ</a></li>
+       <li><a href="#" class="hover:text-white">Báo cáo sự cố</a></li>
+      </ul>
+     </div>
+     <div>
+      <h4 class="text-lg font-bold mb-4">Liên Hệ</h4>
+      <ul class="space-y-2 text-gray-400">
+       <li>📍 24 TL12, Phường An Phú Đông, TP.Hồ Chí Minh</li>
+       <li>📞 079.222.5678</li>
+       <li>✉️ info@solevc.com</li>
+       <li>🌐 www.solevc.com</li>
+      </ul>
+     </div>
+    </div>
+    <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+     <p>© 2025 SOL EVC. Tất cả quyền được bảo lưu.</p>
+    </div>
+   </div>
+  </footer>
+  <script>
+        const defaultConfig = {
+            background_color: "#1e40af",
+            surface_color: "#ffffff", 
+            text_color: "#1f2937",
+            primary_action_color: "#ffffff",
+            secondary_action_color: "#3b82f6",
+            font_family: "Inter",
+            font_size: 16,
+            company_name: "SOL EVC",
+            hero_title: "Hệ Thống Trạm Sạc Xe Điện Thông Minh",
+            hero_subtitle: "Giải pháp sạc toàn diện cho ô tô và xe máy điện tất cả các hãng",
+            car_charging_title: "Trạm Sạc Ô Tô Điện",
+            motorbike_charging_title: "Trạm Sạc Xe Máy Điện",
+            basic_circuit: "SOL EVC Basic",
+            plus_circuit: "SOL EVC Plus", 
+            pro_circuit: "SOL EVC Pro",
+            contact_title: "Liên Hệ Với Chúng Tôi",
+            company_address: "24 TL12, Phường An Phú Đông, TP.Hồ Chí Minh",
+            company_phone: "079 222 5678",
+            company_email: "info@solevc.com"
+        };
+
+        async function onConfigChange(config) {
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseFontStack = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+            const baseSize = config.font_size || defaultConfig.font_size;
+            
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const surfaceColor = config.surface_color || defaultConfig.surface_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
+            const secondaryActionColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+            document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+            document.body.style.fontSize = `${baseSize}px`;
+            document.body.style.color = textColor;
+
+            const heroSection = document.querySelector('.gradient-bg');
+            heroSection.style.background = `linear-gradient(135deg, ${backgroundColor} 0%, ${secondaryActionColor} 50%, #06b6d4 100%)`;
+
+            const navbar = document.getElementById('navbar');
+            navbar.style.backgroundColor = surfaceColor;
+            navbar.style.color = textColor;
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.style.color = textColor;
+            });
+
+            const companyNameEl = document.getElementById('company-name');
+            companyNameEl.style.color = backgroundColor;
+
+            const chargingIcons = document.querySelectorAll('.charging-animation');
+            chargingIcons.forEach(icon => {
+                icon.style.color = primaryActionColor;
+            });
+
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach(card => {
+                card.style.backgroundColor = surfaceColor;
+                card.style.color = textColor;
+            });
+
+            const buttons = document.querySelectorAll('.btn-primary');
+            buttons.forEach(button => {
+                if (button.classList.contains('bg-white')) {
+                    button.style.backgroundColor = primaryActionColor;
+                    button.style.color = backgroundColor;
+                } else {
+                    button.style.backgroundColor = backgroundColor;
+                    button.style.color = primaryActionColor;
+                }
+            });
+
+            document.getElementById('company-name').textContent = config.company_name || defaultConfig.company_name;
+            document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+            document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+            document.getElementById('car-charging-title').textContent = config.car_charging_title || defaultConfig.car_charging_title;
+            document.getElementById('motorbike-charging-title').textContent = config.motorbike_charging_title || defaultConfig.motorbike_charging_title;
+            document.getElementById('basic-circuit').textContent = config.basic_circuit || defaultConfig.basic_circuit;
+            document.getElementById('plus-circuit').textContent = config.plus_circuit || defaultConfig.plus_circuit;
+            document.getElementById('pro-circuit').textContent = config.pro_circuit || defaultConfig.pro_circuit;
+            document.getElementById('contact-title').textContent = config.contact_title || defaultConfig.contact_title;
+            document.getElementById('company-address').textContent = config.company_address || defaultConfig.company_address;
+            document.getElementById('company-phone').textContent = config.company_phone || defaultConfig.company_phone;
+            document.getElementById('company-email').textContent = config.company_email || defaultConfig.company_email;
+
+            const h1Elements = document.querySelectorAll('h1');
+            h1Elements.forEach(el => el.style.fontSize = `${baseSize * 3}px`);
+
+            const h2Elements = document.querySelectorAll('h2');
+            h2Elements.forEach(el => el.style.fontSize = `${baseSize * 2}px`);
+
+            const h3Elements = document.querySelectorAll('h3');
+            h3Elements.forEach(el => el.style.fontSize = `${baseSize * 1.5}px`);
+
+            const h4Elements = document.querySelectorAll('h4');
+            h4Elements.forEach(el => el.style.fontSize = `${baseSize * 1.125}px`);
+
+            const pElements = document.querySelectorAll('p');
+            pElements.forEach(el => el.style.fontSize = `${baseSize}px`);
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            config.background_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.surface_color || defaultConfig.surface_color,
+                        set: (value) => {
+                            config.surface_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ surface_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            config.text_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.primary_action_color || defaultConfig.primary_action_color,
+                        set: (value) => {
+                            config.primary_action_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ primary_action_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+                        set: (value) => {
+                            config.secondary_action_color = value;
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ secondary_action_color: value });
+                            }
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: {
+                    get: () => config.font_family || defaultConfig.font_family,
+                    set: (value) => {
+                        config.font_family = value;
+                        if (window.elementSdk) {
+                            window.elementSdk.setConfig({ font_family: value });
+                        }
+                    }
+                },
+                fontSizeable: {
+                    get: () => config.font_size || defaultConfig.font_size,
+                    set: (value) => {
+                        config.font_size = value;
+                        if (window.elementSdk) {
+                            window.elementSdk.setConfig({ font_size: value });
+                        }
+                    }
+                }
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["company_name", config.company_name || defaultConfig.company_name],
+                ["hero_title", config.hero_title || defaultConfig.hero_title],
+                ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+                ["car_charging_title", config.car_charging_title || defaultConfig.car_charging_title],
+                ["motorbike_charging_title", config.motorbike_charging_title || defaultConfig.motorbike_charging_title],
+                ["basic_circuit", config.basic_circuit || defaultConfig.basic_circuit],
+                ["plus_circuit", config.plus_circuit || defaultConfig.plus_circuit],
+                ["pro_circuit", config.pro_circuit || defaultConfig.pro_circuit],
+                ["contact_title", config.contact_title || defaultConfig.contact_title],
+                ["company_address", config.company_address || defaultConfig.company_address],
+                ["company_phone", config.company_phone || defaultConfig.company_phone],
+                ["company_email", config.company_email || defaultConfig.company_email]
+            ]);
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+
+        // Specialized navigation functions
+        function showCarChargingServices() {
+            showSection('services');
+            // Hide motorbike services and electric motorbike charging
+            document.getElementById('motorbike-services').style.display = 'none';
+            document.getElementById('electric-motorbike-charging').style.display = 'none';
+            // Show car services and maintenance
+            document.getElementById('car-services').style.display = 'block';
+            // Show maintenance services for all
+            const maintenanceSection = document.querySelector('#services-section .mb-20:nth-child(2)');
+            if (maintenanceSection) {
+                maintenanceSection.style.display = 'block';
+            }
+        }
+
+        function showMotorbikeChargingServices() {
+            showSection('services');
+            // Hide car services
+            document.getElementById('car-services').style.display = 'none';
+            // Show motorbike services and electric motorbike charging
+            document.getElementById('motorbike-services').style.display = 'block';
+            document.getElementById('electric-motorbike-charging').style.display = 'block';
+            // Show maintenance services for all
+            const maintenanceSection = document.querySelector('#services-section .mb-20:nth-child(2)');
+            if (maintenanceSection) {
+                maintenanceSection.style.display = 'block';
+            }
+        }
+
+        // Navigation functionality
+        function showSection(sectionName) {
+            document.querySelectorAll('.active-section, .hidden-section').forEach(section => {
+                section.classList.remove('active-section');
+                section.classList.add('hidden-section');
+            });
+            
+            const targetSection = document.getElementById(sectionName + '-section');
+            if (targetSection) {
+                targetSection.classList.remove('hidden-section');
+                targetSection.classList.add('active-section');
+            }
+            
+            // Reset services section to show all services when navigating normally
+            if (sectionName === 'services') {
+                document.getElementById('car-services').style.display = 'block';
+                document.getElementById('motorbike-services').style.display = 'block';
+                document.getElementById('electric-motorbike-charging').style.display = 'none';
+            }
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelectorAll(`[data-section="${sectionName}"]`).forEach(link => {
+                link.classList.add('active');
+            });
+            
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                if (section) {
+                    showSection(section);
+                }
+            });
+        });
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('button[data-section]').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                showSection(section);
+            });
+        });
+
+        // FAQ functionality
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('svg');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Close all other FAQs
+                document.querySelectorAll('.faq-answer.active').forEach(activeAnswer => {
+                    activeAnswer.classList.remove('active');
+                    activeAnswer.previousElementSibling.querySelector('svg').style.transform = 'rotate(0deg)';
+                });
+                
+                answer.classList.add('active');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Form submissions
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formMessage = document.getElementById('form-message');
+            formMessage.textContent = 'Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong vòng 24 giờ.';
+            formMessage.className = 'mt-4 p-4 rounded-lg bg-green-100 text-green-800';
+            formMessage.classList.remove('hidden');
+            
+            this.reset();
+            
+            setTimeout(() => {
+                formMessage.classList.add('hidden');
+            }, 5000);
+        });
+
+        document.getElementById('support-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formMessage = document.getElementById('support-message-result');
+            const priority = document.getElementById('support-priority').value;
+            
+            let responseTime = '2-4 giờ';
+            if (priority === 'high') responseTime = '30 phút';
+            else if (priority === 'medium') responseTime = '1-2 giờ';
+            
+            formMessage.textContent = `Yêu cầu hỗ trợ đã được gửi thành công! Chúng tôi sẽ phản hồi trong vòng ${responseTime}.`;
+            formMessage.className = 'mt-4 p-4 rounded-lg bg-green-100 text-green-800';
+            formMessage.classList.remove('hidden');
+            
+            this.reset();
+            
+            setTimeout(() => {
+                formMessage.classList.add('hidden');
+            }, 7000);
+        });
+
+        document.getElementById('report-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formMessage = document.getElementById('report-message-result');
+            const severity = document.getElementById('report-severity').value;
+            
+            let responseTime = 'trong ngày';
+            let bgColor = 'bg-green-100';
+            let textColor = 'text-green-800';
+            
+            if (severity === 'critical') {
+                responseTime = 'ngay lập tức';
+                bgColor = 'bg-red-100';
+                textColor = 'text-red-800';
+            } else if (severity === 'high') {
+                responseTime = 'trong 1 giờ';
+                bgColor = 'bg-orange-100';
+                textColor = 'text-orange-800';
+            } else if (severity === 'medium') {
+                responseTime = 'trong 4 giờ';
+            }
+            
+            formMessage.textContent = `Báo cáo sự cố đã được ghi nhận! Đội ngũ kỹ thuật sẽ xử lý ${responseTime}. Mã báo cáo: #${Date.now().toString().slice(-6)}`;
+            formMessage.className = `mt-4 p-4 rounded-lg ${bgColor} ${textColor}`;
+            formMessage.classList.remove('hidden');
+            
+            this.reset();
+            
+            setTimeout(() => {
+                formMessage.classList.add('hidden');
+            }, 10000);
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b7447f26b81f2b',t:'MTc2MjYyNzk0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
